@@ -1,0 +1,13 @@
+for (uint i = 0; i < indices.size(); i++){
+      if (indices[i] > 0) {
+        if (tracked_objects[i].type <= 102 && tracked_objects[i].type >= 100) {
+          std::cout << "ID: " << tracked_objects[i].ID << ", yaw: " << tracked_objects[i].GetYaw() << ", 3D yaw: " 
+          << fusion_detection.get3DBoundingBoxesWorld()[indices[i]].yaw << std::endl;
+
+          std::ofstream outfile("yaw_output.txt", std::ios_base::app);
+            outfile << "Time: " << std::fixed << std::setprecision(6) << t_cap.seconds() << ", ID: " << tracked_objects[i].ID << ", yaw: " << tracked_objects[i].GetYaw() << ", 3D yaw: " 
+            << fusion_detection.get3DBoundingBoxesWorld()[indices[i]].yaw << std::endl;
+          outfile.close();
+        }
+      }
+    }
