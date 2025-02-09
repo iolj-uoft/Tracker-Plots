@@ -3,4 +3,5 @@
 /plot_yaw
 !*.py
 !*.txt
+!*.png
 !*.gitignore
