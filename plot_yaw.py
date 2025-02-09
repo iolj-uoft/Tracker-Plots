@@ -78,9 +78,9 @@ def plot_yaw_data(input_file):
 if __name__ == "__main__":
     title_name = input("Please type name of the bag: ")
     print(title_name)
-    id_filename = "/home/yang/output/valid_ids.txt"  # File containing valid IDs
-    input_filename = "/home/yang/output/yaw_output.txt"  # Replace with your actual input file
-    output_filename = "/home/yang/output/filtered_yaw_output.txt"  # Replace with your desired output file
+    id_filename = "/home/yang/output/valid_ids.txt"  
+    input_filename = "/home/yang/output/yaw_output.txt"  
+    output_filename = "/home/yang/output/filtered_yaw_output.txt" 
     
     valid_ids = load_valid_ids(id_filename)
     if not valid_ids:
