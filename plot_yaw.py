@@ -60,8 +60,8 @@ def plot_yaw_data(input_file):
             yaw_3ds.append(yaw_3d)
     
     fig, axs = plt.subplots(2, 1, figsize=(10, 6), sharex=True)
-    axs[0].scatter(times, yaws, label='Yaw', color='b', s=6)
-    axs[0].set_ylabel('Yaw')
+    axs[0].scatter(times, yaws, label='Tracker Yaw', color='b', s=6)
+    axs[0].set_ylabel('Tracker Yaw')
     axs[0].set_ylim(-6, 6)
     axs[0].legend()
     axs[0].grid()
@@ -72,7 +72,8 @@ def plot_yaw_data(input_file):
     axs[1].set_ylim(-6, 6)
     axs[1].legend()
     axs[1].grid()
-    
+    fig.suptitle(f"Bag name: {title_name}")
+    fig.savefig(f"/home/yang/output/{title_name}_yaw_plot.png", dpi=300, bbox_inches='tight')
     plt.show()
 
 if __name__ == "__main__":

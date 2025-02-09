@@ -1,2 +1,6 @@
-*.txt
+*
+!*/
 /plot_yaw
+!*.py
+!*.txt
+!*.gitignore
