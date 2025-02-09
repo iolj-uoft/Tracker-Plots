@@ -73,7 +73,7 @@ def plot_yaw_data(input_file):
     axs[1].legend()
     axs[1].grid()
     fig.suptitle(f"Bag name: {title_name}")
-    fig.savefig(f"/home/yang/output/{title_name}_yaw_plot.png", dpi=300, bbox_inches='tight')
+    fig.savefig(f"/home/yang/output/images/{title_name}_yaw_plot.png", dpi=300, bbox_inches='tight')
     plt.show()
 
 if __name__ == "__main__":
