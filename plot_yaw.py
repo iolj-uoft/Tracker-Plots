@@ -1,5 +1,24 @@
 import matplotlib.pyplot as plt
 
+def load_valid_ids(id_file):
+    """
+    Loads valid IDs from a text file, ensuring all IDs are read correctly.
+    
+    :param id_file: Path to the file containing IDs.
+    :return: A set of valid IDs.
+    """
+    valid_ids = set()
+    try:
+        with open(id_file, 'r') as file:
+            for line in file:
+                line = line.strip()
+                if line:
+                    valid_ids.update(map(int, line.split()))  # Handles multiple IDs in one line
+    except FileNotFoundError:
+        print(f"Error: File {id_file} not found.")
+    print(f"Loaded valid IDs: {valid_ids}")  # Debugging output
+    return valid_ids
+
 def filter_lines_by_ids(input_file, output_file, valid_ids):
     """
     Filters lines in the input file based on the given valid IDs, removes duplicates, and writes the result to the output file.
@@ -41,30 +60,31 @@ def plot_yaw_data(input_file):
             yaw_3ds.append(yaw_3d)
     
     fig, axs = plt.subplots(2, 1, figsize=(10, 6), sharex=True)
-    axs[0].scatter(times, yaws, label='Tracker Yaw', color='b', s=6)
+    axs[0].scatter(times, yaws, label='Yaw', color='b', s=6)
     axs[0].set_ylabel('Yaw')
+    axs[0].set_ylim(-6, 6)
     axs[0].legend()
-    axs[0].set_ylim(-7, 7)
     axs[0].grid()
     
     axs[1].scatter(times, yaw_3ds, label='3D Yaw', color='r', s=6)
     axs[1].set_xlabel('Time')
     axs[1].set_ylabel('3D Yaw')
-    axs[1].set_ylim(-7, 7)
+    axs[1].set_ylim(-6, 6)
     axs[1].legend()
     axs[1].grid()
     
-    axs
     plt.show()
 
 if __name__ == "__main__":
-    # Prompt user for valid IDs
-    input_ids = input("Enter IDs to keep, separated by spaces: ")
-    valid_ids = set(map(int, input_ids.split()))
-    
+    title_name = input("Please type name of the bag: ")
+    print(title_name)
+    id_filename = "/home/yang/output/valid_ids.txt"  # File containing valid IDs
     input_filename = "/home/yang/output/yaw_output.txt"  # Replace with your actual input file
     output_filename = "/home/yang/output/filtered_yaw_output.txt"  # Replace with your desired output file
     
+    valid_ids = load_valid_ids(id_filename)
+    if not valid_ids:
+        print("Warning: No valid IDs were loaded. Check the format of your ID file.")
     filter_lines_by_ids(input_filename, output_filename, valid_ids)
     print(f"Filtered data saved to {output_filename}")
     
