@@ -1,3 +1,5 @@
+import os
+
 import matplotlib.pyplot as plt
 
 def load_valid_ids(id_file):
@@ -83,6 +85,12 @@ if __name__ == "__main__":
     input_filename = "/home/yang/output/yaw_output.txt"  
     output_filename = "/home/yang/output/filtered_yaw_output.txt" 
     
+    # Create a subfolder named by the input title_name
+    output_subfolder = os.path.join("/home/yang/output/yaw output records", title_name)
+    os.makedirs(output_subfolder, exist_ok=True)
+
+    # Update the output filename to be within the new subfolder
+    output_filename = os.path.join(output_subfolder, "filtered_yaw_output.txt")
     valid_ids = load_valid_ids(id_filename)
     if not valid_ids:
         print("Warning: No valid IDs were loaded. Check the format of your ID file.")
