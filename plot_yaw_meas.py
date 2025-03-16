@@ -43,12 +43,12 @@ def filter_lines_by_ids(input_file, output_file, valid_ids):
 
 def plot_yaw_data(input_file, title_name):
     """
-    Reads the filtered file and creates a (3,1) subplot of state yaw, predicted yaw, measured yaw vs time, and C*X.
+    Reads the filtered file and creates a (4,1) subplot of state yaw, predicted yaw, measured yaw, yaw rate, and C*X.
 
     :param input_file: Path to the input file containing the filtered data.
     :param title_name: Name of the bag for labeling the output.
     """
-    times, state_yaws, pred_yaws, meas_yaws, cx_values = [], [], [], [], []
+    times, state_yaws, pred_yaws, meas_yaws, yaw_rates, cx_values = [], [], [], [], [], []
     
     with open(input_file, 'r') as infile:
         for line in infile:
@@ -57,29 +57,36 @@ def plot_yaw_data(input_file, title_name):
             state_yaw = float(parts[2].split(': ')[1])
             pred_yaw = float(parts[3].split(': ')[1])
             meas_yaw = float(parts[4].split(': ')[1])
-            cx_value = float(parts[5].split(': ')[1])
+            yaw_rate = float(parts[5].split(': ')[1])
+            cx_value = float(parts[6].split(': ')[1])
             
             times.append(time)
             state_yaws.append(state_yaw)
             pred_yaws.append(pred_yaw)
             meas_yaws.append(meas_yaw)
+            yaw_rates.append(yaw_rate)
             cx_values.append(cx_value)
     
-    fig, axs = plt.subplots(2, 1, figsize=(10, 8), sharex=True)
+    fig, axs = plt.subplots(3, 1, figsize=(10, 10), sharex=True)
     
-    axs[0].scatter(times, state_yaws, label='State Yaw', color='b', s=6, alpha = 0.3)
-    axs[0].scatter(times, pred_yaws, label='Predicted Yaw', color='g', s=6, alpha = 0.3)
-    axs[0].scatter(times, meas_yaws, label='Measured Yaw', color='r', s=6, alpha=0.3)
+    # Plot yaw values
+    axs[0].scatter(times, state_yaws, label='State Yaw', color='b', s=12)
+    axs[0].scatter(times, pred_yaws, label='Predicted Yaw', color='g', s=12)
+    axs[0].scatter(times, meas_yaws, label='Measured Yaw', color='r', s=12)
     axs[0].set_ylabel('Yaw Values')
     axs[0].set_ylim(-6, 6)
     axs[0].legend()
     axs[0].grid()
 
-    axs[1].scatter(times, cx_values, label='C*X', color='purple', s=6)
-    axs[1].set_ylabel('C*X Value')
+    # Plot yaw rate
+    axs[1].scatter(times, yaw_rates, label='Yaw Rate', color='orange', s=12)
+    axs[1].set_ylabel('Yaw Rate')
     axs[1].grid()
 
-    axs[1].set_xlabel('Time')
+    # Plot C*X
+    axs[2].scatter(times, cx_values, label='C*X', color='purple', s=12)
+    axs[2].set_ylabel('C*X Value')
+    axs[2].grid()
     
     fig.suptitle(f"Bag name: {title_name}")
     
@@ -102,7 +109,7 @@ if __name__ == "__main__":
     output_subfolder = os.path.join("/home/yang/output/yaw output records", title_name)
     os.makedirs(output_subfolder, exist_ok=True)
 
-    # Update the output filename to beya within the new subfolder
+    # Update the output filename to be within the new subfolder
     output_filename = os.path.join(output_subfolder, "filtered_yaw_output.txt")
     valid_ids = load_valid_ids(id_filename)
     
